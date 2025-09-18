@@ -6,8 +6,6 @@ Run locally (from the project root):
 
 1. Use the project's virtualenv Python (recommended):
 
-   /Users/srijan/Documents/pulse_of_profit/.venv/bin/python app.py
-
 2. Open http://127.0.0.1:5001 in your browser.
 
 Troubleshooting:
