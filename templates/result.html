@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Analysis: {{ ticker }}</h2>
+  {% if snapshot.source %}
+  <div class="banner">Data source: <strong>{{ snapshot.source }}</strong></div>
+  {% endif %}
+  <div>
+    {{ chart_html | safe }}
+  </div>
+  <h3>Snapshot (latest)</h3>
+  <div class="snapshot-hero">
+    <div class="snapshot-left">
+      <h4>Overall recommendation</h4>
+      <div class="recommendation">
+        <span class="badge badge-{{ snapshot.recommendation|lower }}">{{ snapshot.recommendation }}</span>
+        <small class="muted">Score: {{ snapshot.score }} ({{ snapshot.valid_signals }} signals)</small>
+      </div>
+      <div class="muted" style="margin-top:8px">{{ snapshot.summary }}</div>
+      <h4>Latest values</h4>
+      <ul>
+        <li>Close: {{ '%.2f'|format(snapshot.close) }}</li>
+        <li>RSI: {{ '%.1f'|format(snapshot.rsi) }}</li>
+        <li>MACD: {{ '%.4f'|format(snapshot.macd) }} (signal {{ '%.4f'|format(snapshot.macd_signal) }})</li>
+        <li>OBV: {{ '%.0f'|format(snapshot.obv) }}</li>
+        <li>Tenkan/Kijun: {{ '%.3f'|format(snapshot.tenkan) }} / {{ '%.3f'|format(snapshot.kijun) }}</li>
+      </ul>
+    </div>
+    <div class="snapshot-right">
+      <h4>Per-indicator signals</h4>
+      <div class="snapshot-list">
+        {% for name, sig in snapshot.signals.items() %}
+          <div class="snapshot-item" title="{{ snapshot.explanations.get(name, '') }}">
+            <div class="sig-name">{{ name.replace('_', ' ') | capitalize }}</div>
+            <div class="sig-badge">
+              <span class="badge badge-{{ sig|lower }}">{{ sig }}</span>
+            </div>
+            <div class="sig-expl muted">{{ snapshot.explanations.get(name, '') }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% if news %}
+  <h3>Trending News</h3>
+  <div class="card">
+    <ul class="news-list">
+      {% for n in news %}
+        <li><a href="{{ n.link }}" target="_blank" rel="noopener">{{ n.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  <p><a href="{{ url_for('index') }}">Run another analysis</a></p>
+</section>
+{% endblock %}

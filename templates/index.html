@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-inner container">
+    <div class="hero-left">
+      <div class="brand-wrap">
+        <img src="{{ url_for('static', filename='ai_bull.svg') }}" class="logo" alt="ai bull" />
+        <div>
+          <div style="font-weight:700">Pulse of Profit</div>
+          <div style="font-size:12px;color:var(--muted)">AI-driven signals & market snapshots</div>
+        </div>
+      </div>
+
+      <h1 class="hero-title">Market signals made simple</h1>
+      <p class="hero-sub">Type a ticker to run a quick technical scan across RSI, MACD, OBV and Ichimoku. Get a one-line recommendation, per-indicator signals, and related news.</p>
+
+      <form class="hero-search" method="POST" action="{{ url_for('analyze') }}">
+        <input name="ticker" class="search-input" placeholder="AAPL, TSLA, MSFT..." value="{{ default_ticker }}" required />
+        <input type="hidden" name="start" value="{{ default_start }}">
+        <input type="hidden" name="end" value="{{ default_end }}">
+        <div class="indicator-options">
+          <label><input type="checkbox" name="rsi" checked> RSI</label>
+          <label><input type="checkbox" name="macd" checked> MACD</label>
+          <label><input type="checkbox" name="obv" checked> OBV</label>
+          <label><input type="checkbox" name="ichimoku" checked> Ichimoku</label>
+        </div>
+        <button class="search-btn" type="submit">Analyze</button>
+      </form>
+
+      <div class="trending-tiles">
+        {% for m in movers %}
+        <div class="tile">
+          <div class="tile-ticker">{{ m.ticker }}</div>
+          <div class="tile-value">Last {{ '%.2f'|format(m.last) }}</div>
+          <div class="tile-pct {{ 'up' if m.pct>0 else 'down' }}">{{ '%.2f%%'|format(m.pct) }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <img src="{{ url_for('static', filename='ai_bull.svg') }}" class="hero-illustration" alt="ai bull">
+    </div>
+  </div>
+
+  <div class="marquee">
+    <div class="marquee-inner">
+      {% for n in news %}
+        <div class="marquee-item">{{ n.title }} — <a href="{{ n.link }}" target="_blank">read</a></div>
+      {% endfor %}
+      {% for n in news %}
+        <div class="marquee-item">{{ n.title }} — <a href="{{ n.link }}" target="_blank">read</a></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<main class="container homepage-grid">
+  <section class="card quick-cards">
+    <h3>Quick actions</h3>
+    <div class="quick-row">
+      <form method="POST" action="{{ url_for('analyze') }}"><input type="hidden" name="ticker" value="AAPL"><button>AAPL</button></form>
+      <form method="POST" action="{{ url_for('analyze') }}"><input type="hidden" name="ticker" value="MSFT"><button>MSFT</button></form>
+      <form method="POST" action="{{ url_for('analyze') }}"><input type="hidden" name="ticker" value="TSLA"><button>TSLA</button></form>
+      <form method="POST" action="{{ url_for('analyze') }}"><input type="hidden" name="ticker" value="NVDA"><button>NVDA</button></form>
+    </div>
+  </section>
+
+  <section class="card recent-card">
+    <h3>Recent analyses</h3>
+    <ul class="recent-list">
+      {% for r in recent %}
+        <li>{{ r.ticker }} • {{ r.start }} → {{ r.end }} • <span class="muted">{{ r.recommendation }}</span></li>
+      {% else %}
+        <li class="muted">No recent analyses — run one to populate this list.</li>
+      {% endfor %}
+    </ul>
+  </section>
+</main>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+env/
+.venv/
+venv/
+venv.bak/
+*.env
+.env
+.env.*
+pip-wheel-metadata/
+pip-log.txt
+
+# Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing / tooling
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Flask
+instance/
+.webassets-cache/
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+*.log
+
+# macOS
+._*

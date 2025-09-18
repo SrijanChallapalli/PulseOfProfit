@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Pulse of Profit</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light-border.css">
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <div class="container header-inner">
+          <div class="brand-wrap">
+            <img src="{{ url_for('static', filename='ai_bull.svg') }}" alt="ai bull" class="logo">
+            <h1 class="brand">Pulse<span class="accent">•</span>Profit</h1>
+          </div>
+          <nav class="nav">
+            <a href="{{ url_for('index') }}">Home</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash">
+              {% for m in messages %}
+                <div class="flash-item">{{ m }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="site-footer">
+        <div class="container">© {{ now().year if now is defined else '' }} Pulse of Profit</div>
+      </footer>
+    </div>
+      <script src="https://unpkg.com/@popperjs/core@2"></script>
+      <script src="https://unpkg.com/tippy.js@6"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function(){
+          // apply tippy to elements with title attribute
+          tippy('[title]', {theme: 'light-border', delay: [200,50], maxWidth: 320});
+        });
+      </script>
+  </body>
+</html>
