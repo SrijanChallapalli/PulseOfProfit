@@ -316,6 +316,12 @@ def market_movers(sample_tickers=None, days=3, max_items=5):
     movers.sort(key=lambda x: abs(x['pct']), reverse=True)
     return movers[:max_items]
 
+
+@app.route("/health", methods=["GET"])
+def health():
+    """Lightweight health endpoint for smoke tests that avoids external requests."""
+    return "ok", 200
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5001))  # 5001 avoids AirPlay conflict
     app.run(host="0.0.0.0", port=port, debug=True)
